@@ -33,9 +33,9 @@ export default function ContactPage() {
           <div className="card-shell">
             <p className="text-xs uppercase tracking-widest text-tactical-oliveLight">WhatsApp</p>
             <Link
-              href={`https://wa.me/${siteConfig.whatsapp}`}
+              href={siteConfig.whatsappUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="mt-2 inline-flex text-sm text-zinc-300 hover:text-zinc-100"
             >
               Start WhatsApp Chat

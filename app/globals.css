@@ -1,0 +1,70 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-tactical-950 text-zinc-100 antialiased;
+  background-image: radial-gradient(circle at 20% 10%, rgba(111, 124, 77, 0.12), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(143, 158, 107, 0.08), transparent 35%),
+    linear-gradient(180deg, #0b0d0b 0%, #090a09 100%);
+  line-height: 1.6;
+}
+
+main {
+  @apply min-h-screen;
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.section-title {
+  @apply font-heading text-4xl font-bold uppercase tracking-[0.03em] text-zinc-100 sm:text-5xl;
+  text-wrap: balance;
+}
+
+.card-shell {
+  @apply rounded-3xl border border-zinc-700/70 bg-tactical-900 p-6 shadow-tactical backdrop-blur transition-all duration-200;
+  background-color: rgba(16, 19, 17, 0.72);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.card-shell:hover {
+  @apply border-zinc-600/80;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-xl bg-tactical-olive px-5 py-3 text-sm font-semibold text-zinc-900 shadow-[0_8px_22px_rgba(111,124,77,0.22)] transition-colors hover:bg-tactical-oliveLight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tactical-oliveLight focus-visible:ring-offset-2 focus-visible:ring-offset-tactical-900;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-xl border border-zinc-600/80 bg-black/20 px-5 py-3 text-sm font-semibold text-zinc-100 transition-colors hover:border-zinc-400 hover:bg-zinc-900/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-tactical-900;
+}
+
+.link-accent {
+  @apply text-sm font-semibold text-tactical-oliveLight underline-offset-4 hover:text-zinc-100 hover:underline;
+}
+
+.section-divider {
+  @apply my-6 h-px w-full;
+  background: linear-gradient(90deg, transparent, rgba(90, 96, 77, 0.7), transparent);
+}
+
+.input-shell {
+  @apply rounded-xl border border-zinc-700 bg-black/45 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-500 focus-visible:border-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/70;
+}
+
+::selection {
+  background: rgba(111, 124, 77, 0.35);
+  color: #f4f4f5;
+}
+
+a {
+  @apply transition-colors;
+}

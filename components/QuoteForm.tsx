@@ -20,6 +20,16 @@ type FormState = {
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
+type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
+
+type ApiErrorResponse = {
+  ok: false;
+  message?: string;
+  errors?: FormErrors;
+};
+
+const QUOTE_API_ENDPOINT = '/api/quote';
+
 const initialState: FormState = {
   name: '',
   phone: '',
@@ -35,8 +45,9 @@ const guardOptions = ['1', '2', '3', '4+'];
 
 export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, formId = 'quote-form' }: QuoteFormProps) {
   const [form, setForm] = useState<FormState>(initialState);
-  const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitState, setSubmitState] = useState<SubmitState>('idle');
+  const [serverMessage, setServerMessage] = useState('');
 
   const canSubmit = useMemo(
     () =>
@@ -49,8 +60,7 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
     [form]
   );
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const validate = (): FormErrors => {
     const nextErrors: FormErrors = {};
 
     if (!form.name.trim()) nextErrors.name = 'Please enter your name.';
@@ -60,20 +70,60 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
     if (!form.service.trim()) nextErrors.service = 'Please select a service.';
     if (!form.guardsNeeded.trim()) nextErrors.guardsNeeded = 'Please select guards needed.';
 
+    return nextErrors;
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const nextErrors = validate();
+
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
-      setSubmitted(false);
+      setServerMessage('');
+      setSubmitState('idle');
       return;
     }
 
     setErrors({});
-    setSubmitted(true);
-    console.log('Quote request payload:', form);
+    setServerMessage('');
+    setSubmitState('submitting');
 
-    // TODO: Wire to Formspree endpoint.
-    // TODO: Alternatively POST to a Next.js route handler at /api/quote.
+    try {
+      const response = await fetch(QUOTE_API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          area: form.area,
+          service: form.service,
+          guardsNeeded: form.guardsNeeded,
+          notes: form.notes
+        })
+      });
 
-    setForm(initialState);
+      if (!response.ok) {
+        const data = (await response.json()) as ApiErrorResponse;
+        if (data.errors) {
+          setErrors(data.errors);
+        }
+        setServerMessage(data.message || 'Submission failed. Please try again in a moment.');
+        setSubmitState('error');
+        return;
+      }
+
+      setSubmitState('success');
+      setServerMessage('');
+      setForm(initialState);
+    } catch {
+      setSubmitState('error');
+      setServerMessage('Submission failed. Please try again in a moment.');
+    }
   };
 
   const formBody = (
@@ -83,21 +133,28 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
         From R19,500 per officer / month (excl. VAT). VAT charged at the prevailing rate.
       </p>
 
-      {submitted ? (
+      {submitState === 'success' ? (
         <div className="mt-4 rounded-xl border border-emerald-700/60 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-300">
-          Thank you. Your request has been captured. Our team will respond within 24 hours.
+          Thank you. Your request has been submitted successfully. Our team will respond within 24 hours.
         </div>
       ) : null}
 
       {Object.keys(errors).length > 0 ? (
         <div className="mt-4 rounded-xl border border-rose-700/60 bg-rose-950/40 px-4 py-3 text-sm text-rose-300">
-          Please fix the highlighted fields and submit again.
+          Please fix the highlighted fields and try again.
+        </div>
+      ) : null}
+
+      {submitState === 'error' && serverMessage ? (
+        <div className="mt-4 rounded-xl border border-rose-700/60 bg-rose-950/40 px-4 py-3 text-sm text-rose-300">
+          {serverMessage}
         </div>
       ) : null}
 
       <form onSubmit={onSubmit} className="mt-6 grid gap-4 md:grid-cols-2">
         <div>
           <input
+            name="name"
             className="input-shell w-full"
             placeholder="Name"
             value={form.name}
@@ -109,6 +166,7 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
 
         <div>
           <input
+            name="phone"
             className="input-shell w-full"
             placeholder="Phone"
             value={form.phone}
@@ -120,6 +178,7 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
 
         <div>
           <input
+            name="email"
             className="input-shell w-full"
             placeholder="Email"
             type="email"
@@ -132,6 +191,7 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
 
         <div>
           <select
+            name="area"
             className="input-shell w-full"
             value={form.area}
             onChange={(event) => setForm((prev) => ({ ...prev, area: event.target.value }))}
@@ -139,7 +199,7 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
           >
             <option value="">Select Area</option>
             {areaOptions.map((area) => (
-              <option key={area} value={area.toLowerCase()}>
+              <option key={area} value={area}>
                 {area}
               </option>
             ))}
@@ -149,24 +209,26 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
 
         <div>
           <select
+            name="service"
             className="input-shell w-full"
             value={form.service}
             onChange={(event) => setForm((prev) => ({ ...prev, service: event.target.value }))}
             aria-invalid={!!errors.service}
           >
             <option value="">Select Service</option>
-            <option value="estate-security">Estate Security</option>
-            <option value="farm-rural-security">Farm & Rural Security</option>
-            <option value="commercial-security">Commercial Security</option>
-            <option value="access-control">Access Control</option>
-            <option value="event-security">Event Security</option>
-            <option value="risk-assessments">Risk Assessments</option>
+            <option value="Estate Security">Estate Security</option>
+            <option value="Farm & Rural Security">Farm & Rural Security</option>
+            <option value="Commercial Security">Commercial Security</option>
+            <option value="Access Control">Access Control</option>
+            <option value="Event Security">Event Security</option>
+            <option value="Risk Assessments">Risk Assessments</option>
           </select>
           {errors.service ? <p className="mt-1 text-xs text-rose-300">{errors.service}</p> : null}
         </div>
 
         <div>
           <select
+            name="guardsNeeded"
             className="input-shell w-full"
             value={form.guardsNeeded}
             onChange={(event) => setForm((prev) => ({ ...prev, guardsNeeded: event.target.value }))}
@@ -184,6 +246,7 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
 
         <div className="md:col-span-2">
           <textarea
+            name="notes"
             className="input-shell min-h-32 w-full"
             placeholder="Notes"
             value={form.notes}
@@ -191,8 +254,12 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
           />
         </div>
 
-        <button className="btn-primary disabled:cursor-not-allowed disabled:opacity-60" disabled={!canSubmit} type="submit">
-          Submit Quote Request
+        <button
+          className="btn-primary disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={!canSubmit || submitState === 'submitting'}
+          type="submit"
+        >
+          {submitState === 'submitting' ? 'Submitting...' : 'Submit Quote Request'}
         </button>
       </form>
     </div>
@@ -208,4 +275,3 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
     </section>
   );
 }
-

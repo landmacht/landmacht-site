@@ -1,7 +1,8 @@
-﻿import fs from 'node:fs';
+import fs from 'node:fs';
 import path from 'node:path';
 
 import matter from 'gray-matter';
+import { serialize } from 'next-mdx-remote/serialize';
 
 const postsDirectory = path.join(process.cwd(), 'content', 'insights');
 
@@ -55,7 +56,7 @@ type MarkdownRendererProps = {
   content: string;
 };
 
-export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const blocks = content
     .split(/\n\s*\n/g)
     .map((block) => block.trim())
@@ -96,4 +97,12 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       })}
     </>
   );
+}
+
+export async function renderPostContent(content: string) {
+  await serialize(content, {
+    parseFrontmatter: false
+  });
+
+  return <MarkdownRenderer content={content} />;
 }

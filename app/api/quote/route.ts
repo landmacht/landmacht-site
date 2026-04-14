@@ -31,9 +31,10 @@ const QUOTE_SIGNATURE_HTML = `
       <td>
         <strong style="color:#6FAF5E;font-size:18px;">Landmacht Team</strong><br/>
         <span style="color:#6FAF5E;">Quotes Department</span><br/><br/>
-        <strong>P:</strong> +27 78 620 8404<br/>
+        <strong>P:</strong> +27 87 265 7594<br/>
         <strong>E:</strong> <a href="mailto:info@landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">info@landmacht.co.za</a><br/>
-        <strong>W:</strong> <a href="https://www.landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">www.landmacht.co.za</a>
+        <strong>W:</strong> <a href="https://wa.me/27786208404" style="color:#6FAF5E;text-decoration:none;">WhatsApp Chat</a><br/>
+        <strong>Web:</strong> <a href="https://www.landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">www.landmacht.co.za</a>
       </td>
     </tr>
   </table>

@@ -7,6 +7,7 @@ import { Hero } from '@/components/Hero';
 import { PackageCards } from '@/components/PackageCards';
 import { QuoteForm } from '@/components/QuoteForm';
 import { ServiceGrid } from '@/components/ServiceGrid';
+import { StickyTrustBar } from '@/components/StickyTrustBar';
 import { TrustStrip } from '@/components/TrustStrip';
 import { resolveImagePath } from '@/lib/images';
 import { buildMetadata } from '@/lib/metadata';
@@ -56,7 +57,9 @@ const servicePositioning = [
 export default function HomePage() {
   return (
     <>
+      <StickyTrustBar targetId="home-hero" />
       <Hero
+        id="home-hero"
         title="Disciplined Security. Visible Deterrence. Reliable Control."
         subtitle="Professional guarding and operational oversight for estates, farms, and businesses across Franschhoek, Paarl, Wellington, and surrounding Western Cape coverage."
         primaryCta={{ label: 'Get My Quote', href: '#quote-form' }}

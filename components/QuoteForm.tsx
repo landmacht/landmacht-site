@@ -22,8 +22,8 @@ type FormErrors = Partial<Record<keyof FormState, string>>;
 
 type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
 
-type ApiErrorResponse = {
-  ok: false;
+type ApiResponse = {
+  success?: boolean;
   message?: string;
   errors?: FormErrors;
 };
@@ -107,8 +107,9 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
         })
       });
 
-      if (!response.ok) {
-        const data = (await response.json()) as ApiErrorResponse;
+      const data = (await response.json()) as ApiResponse;
+
+      if (!response.ok || data.success !== true) {
         if (data.errors) {
           setErrors(data.errors);
         }

@@ -21,7 +21,13 @@ export const siteConfig = {
   logo: '/images/landmacht-logo.png'
 };
 
-export const trustItems = ['PSIRA Registered', 'Estate Specialists', 'Trained Guards', 'Western Cape coverage'];
+export const trustItems = [
+  'PSIRA Registered',
+  'Estate Specialists',
+  'Deployment-Ready Officers',
+  '24/7 Operational Oversight',
+  'Western Cape Coverage'
+];
 
 export const packageCards = [
   {

@@ -41,8 +41,8 @@ export function StickyTrustBar({ targetId }: StickyTrustBarProps) {
       aria-hidden={!visible}
     >
       <div className="section-shell pt-2">
-        <div className="rounded-2xl border border-zinc-700/80 bg-tactical-950/92 px-6 py-4 text-sm font-medium text-zinc-200 shadow-[0_10px_24px_rgba(0,0,0,0.28)] backdrop-blur">
-          <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div className="rounded-2xl border border-zinc-700/80 bg-tactical-950/92 px-5 py-3 text-xs font-medium text-zinc-200 shadow-[0_10px_24px_rgba(0,0,0,0.28)] backdrop-blur sm:text-sm">
+          <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             {trustItems.map((item) => (
               <span key={item} className="flex-1 text-center">
                 {item}

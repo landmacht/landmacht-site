@@ -63,7 +63,7 @@ export function Footer() {
               <li key={area}>{area}</li>
             ))}
           </ul>
-          <Link href="tel:+27786208404" className="mt-4 inline-flex text-sm text-zinc-300 hover:text-zinc-100">
+          <Link href="tel:+27872657594" className="mt-4 inline-flex text-sm text-zinc-300 hover:text-zinc-100">
             Call {siteConfig.phone}
           </Link>
           <br />

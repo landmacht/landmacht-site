@@ -21,8 +21,7 @@ export default function InsightsPage() {
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {posts.map((post) => (
           <article key={post.slug} className="card-shell">
-            <p className="text-xs uppercase tracking-[0.2em] text-tactical-oliveLight">{post.frontmatter.date}</p>
-            <h2 className="mt-3 font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">{post.frontmatter.title}</h2>
+            <h2 className="font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">{post.frontmatter.title}</h2>
             <p className="mt-3 text-sm text-zinc-300">{post.frontmatter.description}</p>
             <Link
               href={`/insights/${post.slug}`}

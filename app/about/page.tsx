@@ -31,7 +31,7 @@ export default function AboutPage() {
           <article className="card-shell">
             <h2 className="font-heading text-2xl uppercase text-zinc-100">Leadership</h2>
             <p className="mt-3 text-sm text-zinc-300">
-              Leadership placeholders can be updated here with profile details, qualifications, and operational responsibilities.
+              Operational leadership with experience across CPO/PSD, Escorts, TRT, CIT, Instructor roles, and PSIRA-accredited security environments. Focused on disciplined execution, accountability, and practical on-site control.
             </p>
           </article>
         </div>

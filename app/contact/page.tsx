@@ -6,7 +6,7 @@ import { siteConfig } from '@/lib/site';
 
 export const metadata = buildMetadata(
   'Get My Quote or Contact Landmacht',
-  'Contact Landmacht Veiligheid in Franschhoek, Paarl, and Wellington. Reach us at info@landmacht.co.za or +27 78 620 8404 for disciplined private security services.'
+  'Contact Landmacht Veiligheid in Franschhoek, Paarl, and Wellington. Reach us at info@landmacht.co.za or +27 87 265 7594 for disciplined private security services.'
 );
 
 export default function ContactPage() {
@@ -20,7 +20,7 @@ export default function ContactPage() {
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <div className="card-shell">
             <p className="text-xs uppercase tracking-widest text-tactical-oliveLight">Phone</p>
-            <p className="mt-2 text-sm text-zinc-300">{siteConfig.phone}</p>
+            <p className="mt-2 text-sm text-zinc-300">+27 87 265 7594</p>
           </div>
           <div className="card-shell">
             <p className="text-xs uppercase tracking-widest text-tactical-oliveLight">Email</p>

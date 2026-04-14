@@ -1,5 +1,7 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+
+import { CONTACT, WHATSAPP_LINK } from '@/src/lib/contact';
 
 type QuotePayload = {
   name?: string;
@@ -15,7 +17,7 @@ type FieldErrors = Partial<Record<'name' | 'phone' | 'email' | 'area' | 'service
 
 const WHATSAPP_BUTTON_HTML = `
   <div style="margin:20px 0;">
-    <a href="https://wa.me/27786208404?text=Hi%20Landmacht%20Veiligheid%2C%20I%20would%20like%20assistance."
+    <a href="${WHATSAPP_LINK}"
        style="display:inline-block;padding:12px 20px;background:#25D366;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;">
       WhatsApp Us
     </a>
@@ -31,10 +33,10 @@ const QUOTE_SIGNATURE_HTML = `
       <td>
         <strong style="color:#6FAF5E;font-size:18px;">Landmacht Team</strong><br/>
         <span style="color:#6FAF5E;">Quotes Department</span><br/><br/>
-        <strong>P:</strong> +27 87 265 7594<br/>
-        <strong>E:</strong> <a href="mailto:info@landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">info@landmacht.co.za</a><br/>
-        <strong>W:</strong> <a href="https://wa.me/27786208404" style="color:#6FAF5E;text-decoration:none;">WhatsApp Chat</a><br/>
-        <strong>Web:</strong> <a href="https://www.landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">www.landmacht.co.za</a>
+        <strong>P:</strong> ${CONTACT.PHONE_DISPLAY}<br/>
+        <strong>E:</strong> <a href="mailto:${CONTACT.EMAIL}" style="color:#6FAF5E;text-decoration:none;">${CONTACT.EMAIL}</a><br/>
+        <strong>W:</strong> <a href="${WHATSAPP_LINK}" style="color:#6FAF5E;text-decoration:none;">WhatsApp Chat</a><br/>
+        <strong>Web:</strong> <a href="${CONTACT.WEBSITE}" style="color:#6FAF5E;text-decoration:none;">${CONTACT.WEBSITE.replace('https://', 'www.')}</a>
       </td>
     </tr>
   </table>
@@ -166,8 +168,8 @@ export async function POST(request: Request) {
 
     try {
       const resendResponse = await resend.emails.send({
-        from: 'Landmacht Quotes <quotes@landmacht.co.za>',
-        to: ['armand@landmacht.co.za'],
+        from: `Landmacht Quotes <${CONTACT.QUOTES_EMAIL}>`,
+        to: [CONTACT.QUOTES_EMAIL],
         subject: 'New Quote Request - Landmacht Website',
         text: textBody,
         html: htmlBody,
@@ -216,7 +218,7 @@ export async function POST(request: Request) {
 
       try {
         const autoReplyResponse = await resend.emails.send({
-          from: 'Landmacht Veiligheid <quotes@landmacht.co.za>',
+          from: `Landmacht Veiligheid <${CONTACT.QUOTES_EMAIL}>`,
           to: [body.email?.trim() || ''],
           subject: 'Quote Request Received | Landmacht Veiligheid',
           html: quoteAutoReplyHtml

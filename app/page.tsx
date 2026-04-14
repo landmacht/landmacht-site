@@ -1,4 +1,4 @@
-﻿import { SafeImage } from '@/components/SafeImage';
+import { SafeImage } from '@/components/SafeImage';
 import Link from 'next/link';
 
 import { DeploymentExamples } from '@/components/DeploymentExamples';
@@ -12,10 +12,11 @@ import { TrustStrip } from '@/components/TrustStrip';
 import { resolveImagePath } from '@/lib/images';
 import { buildMetadata } from '@/lib/metadata';
 import { homeFaq, services, siteConfig } from '@/lib/site';
+import { CONTACT, WHATSAPP_LINK } from '@/src/lib/contact';
 
 export const metadata = buildMetadata(
   'Landmacht Veiligheid | Private Security in Franschhoek, Paarl and Wellington',
-  'Landmacht Veiligheid provides disciplined private security services across Franschhoek, Paarl, and Wellington. Contact info@landmacht.co.za or +27 78 620 8404.'
+  `Landmacht Veiligheid provides disciplined private security services across Franschhoek, Paarl, and Wellington. Contact ${CONTACT.EMAIL} or ${CONTACT.PHONE_DISPLAY}.`
 );
 
 const strengths = [
@@ -63,7 +64,7 @@ export default function HomePage() {
         title="Disciplined Security. Visible Deterrence. Reliable Control."
         subtitle="Professional guarding and operational oversight for estates, farms, and businesses across Franschhoek, Paarl, Wellington, and surrounding Western Cape coverage."
         primaryCta={{ label: 'Get My Quote', href: '#quote-form' }}
-        secondaryCta={{ label: 'WhatsApp Now', href: siteConfig.whatsappUrl }}
+        secondaryCta={{ label: 'WhatsApp Now', href: WHATSAPP_LINK }}
       >
         <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           <div className="rounded-2xl border border-zinc-700/80 bg-black/20 px-4 py-4 text-sm text-zinc-200">
@@ -173,7 +174,7 @@ export default function HomePage() {
             <Link href="#quote-form" className="btn-primary">
               Get My Quote
             </Link>
-            <Link href={siteConfig.whatsappUrl} className="btn-secondary">
+            <Link href={WHATSAPP_LINK} className="btn-secondary">
               WhatsApp Now
             </Link>
           </div>

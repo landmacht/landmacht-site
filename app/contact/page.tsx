@@ -1,12 +1,13 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 
 import { QuoteForm } from '@/components/QuoteForm';
 import { buildMetadata } from '@/lib/metadata';
 import { siteConfig } from '@/lib/site';
+import { CONTACT, WHATSAPP_LINK } from '@/src/lib/contact';
 
 export const metadata = buildMetadata(
   'Get My Quote or Contact Landmacht',
-  'Contact Landmacht Veiligheid in Franschhoek, Paarl, and Wellington. Reach us at info@landmacht.co.za or +27 87 265 7594 for disciplined private security services.'
+  `Contact Landmacht Veiligheid in Franschhoek, Paarl, and Wellington. Reach us at ${CONTACT.EMAIL} or ${CONTACT.PHONE_DISPLAY} for disciplined private security services.`
 );
 
 export default function ContactPage() {
@@ -20,11 +21,11 @@ export default function ContactPage() {
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <div className="card-shell">
             <p className="text-xs uppercase tracking-widest text-tactical-oliveLight">Phone</p>
-            <p className="mt-2 text-sm text-zinc-300">+27 87 265 7594</p>
+            <p className="mt-2 text-sm text-zinc-300">{CONTACT.PHONE_DISPLAY}</p>
           </div>
           <div className="card-shell">
             <p className="text-xs uppercase tracking-widest text-tactical-oliveLight">Email</p>
-            <p className="mt-2 text-sm text-zinc-300">{siteConfig.email}</p>
+            <p className="mt-2 text-sm text-zinc-300">{CONTACT.EMAIL}</p>
           </div>
           <div className="card-shell">
             <p className="text-xs uppercase tracking-widest text-tactical-oliveLight">Areas Served</p>
@@ -33,7 +34,7 @@ export default function ContactPage() {
           <div className="card-shell">
             <p className="text-xs uppercase tracking-widest text-tactical-oliveLight">WhatsApp</p>
             <Link
-              href={siteConfig.whatsappUrl}
+              href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 inline-flex text-sm text-zinc-300 hover:text-zinc-100"

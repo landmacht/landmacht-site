@@ -2,6 +2,7 @@
 import Link from 'next/link';
 
 import { siteConfig } from '@/lib/site';
+import { CONTACT } from '@/src/lib/contact';
 
 export function Footer() {
   return (
@@ -21,8 +22,8 @@ export function Footer() {
           <p className="mt-3 max-w-sm text-sm text-zinc-300">
             Professional private security services with disciplined operational oversight.
           </p>
-          <p className="mt-4 text-sm text-zinc-300">{siteConfig.phone}</p>
-          <p className="text-sm text-zinc-300">{siteConfig.email}</p>
+          <p className="mt-4 text-sm text-zinc-300">{CONTACT.PHONE_DISPLAY}</p>
+          <p className="text-sm text-zinc-300">{CONTACT.EMAIL}</p>
         </div>
 
         <div>
@@ -63,12 +64,12 @@ export function Footer() {
               <li key={area}>{area}</li>
             ))}
           </ul>
-          <Link href="tel:+27872657594" className="mt-4 inline-flex text-sm text-zinc-300 hover:text-zinc-100">
-            Call {siteConfig.phone}
+          <Link href={`tel:${CONTACT.PHONE}`} className="mt-4 inline-flex text-sm text-zinc-300 hover:text-zinc-100">
+            Call {CONTACT.PHONE_DISPLAY}
           </Link>
           <br />
-          <Link href={`mailto:${siteConfig.email}`} className="inline-flex text-sm text-zinc-300 hover:text-zinc-100">
-            Email {siteConfig.email}
+          <Link href={`mailto:${CONTACT.EMAIL}`} className="inline-flex text-sm text-zinc-300 hover:text-zinc-100">
+            Email {CONTACT.EMAIL}
           </Link>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { FormEvent, useMemo, useState } from 'react';
 import Link from 'next/link';
 
-import { siteConfig } from '@/lib/site';
+import { WHATSAPP_LINK } from '@/src/lib/contact';
 
 type QuoteFormProps = {
   title?: string;
@@ -156,7 +156,7 @@ export function QuoteForm({
             Need a faster response? Message us on WhatsApp and we will assist you directly.
           </p>
           <div className="mt-3 flex flex-wrap gap-3">
-            <Link href={siteConfig.whatsappUrl} className="btn-secondary">
+            <Link href={WHATSAPP_LINK} className="btn-secondary">
               WhatsApp Now
             </Link>
           </div>

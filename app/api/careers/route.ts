@@ -18,6 +18,29 @@ const ALLOWED_FILE_TYPES = new Set([
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 ]);
+const WHATSAPP_BUTTON_HTML = `
+  <div style="margin:20px 0;">
+    <a href="https://wa.me/27786208404?text=Hi%20Landmacht%20Veiligheid%2C%20I%20would%20like%20assistance."
+       style="display:inline-block;padding:12px 20px;background:#25D366;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;">
+      WhatsApp Us
+    </a>
+  </div>
+`;
+const CAREERS_SIGNATURE_HTML = `
+  <table style="font-family:Arial,sans-serif;font-size:14px;color:#333;">
+    <tr>
+      <td style="padding-right:15px;">
+        <img src="https://landmacht.co.za/logo.png" alt="Landmacht Veiligheid" width="120" style="display:block;border:0;outline:none;text-decoration:none;" />
+      </td>
+      <td>
+        <strong style="color:#6FAF5E;font-size:18px;">Landmacht Team</strong><br/><br/>
+        <strong>P:</strong> +27 78 620 8404<br/>
+        <strong>E:</strong> <a href="mailto:info@landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">info@landmacht.co.za</a><br/>
+        <strong>W:</strong> <a href="https://www.landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">www.landmacht.co.za</a>
+      </td>
+    </tr>
+  </table>
+`;
 
 function escapeHtml(value: string) {
   return value
@@ -215,6 +238,49 @@ export async function POST(request: Request) {
           },
           { status: 500 }
         );
+      }
+
+      const careersAutoReplyHtml = `
+        <div style="font-family:Arial,sans-serif;background-color:#f5f5f4;padding:24px;color:#18181b;">
+          <table style="max-width:640px;width:100%;margin:0 auto;background-color:#ffffff;border:1px solid #e4e4e7;border-radius:16px;">
+            <tr>
+              <td style="padding:24px 28px;background-color:#18181b;color:#fafafa;">
+                <p style="margin:0;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;opacity:0.8;">Landmacht Veiligheid Careers</p>
+                <h1 style="margin:10px 0 0;font-size:24px;line-height:1.3;">Application Received</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px;">
+                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3f3f46;">Hello ${safeBody.name},</p>
+                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3f3f46;">
+                  Thank you for your application. We have received it successfully.
+                </p>
+                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3f3f46;">
+                  Our recruitment team will review your submission and we will make contact if your profile matches our current requirements.
+                </p>
+                ${WHATSAPP_BUTTON_HTML}
+                ${CAREERS_SIGNATURE_HTML}
+              </td>
+            </tr>
+          </table>
+        </div>
+      `;
+
+      try {
+        const autoReplyResponse = await resend.emails.send({
+          from: 'Landmacht Careers <careers@landmacht.co.za>',
+          to: [body.email?.trim() || ''],
+          subject: 'Application Received | Landmacht Veiligheid Careers',
+          html: careersAutoReplyHtml
+        });
+
+        console.log('Careers auto-reply send response:', autoReplyResponse);
+
+        if (autoReplyResponse.error || !autoReplyResponse.data?.id) {
+          console.error('Careers auto-reply send failed:', autoReplyResponse.error ?? autoReplyResponse);
+        }
+      } catch (error) {
+        console.error('Careers auto-reply send threw an error:', error);
       }
     } catch (error) {
       console.error('Resend careers email send threw an error:', error);

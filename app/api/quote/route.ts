@@ -13,6 +13,32 @@ type QuotePayload = {
 
 type FieldErrors = Partial<Record<'name' | 'phone' | 'email' | 'area' | 'service' | 'guardsNeeded', string>>;
 
+const WHATSAPP_BUTTON_HTML = `
+  <div style="margin:20px 0;">
+    <a href="https://wa.me/27786208404?text=Hi%20Landmacht%20Veiligheid%2C%20I%20would%20like%20assistance."
+       style="display:inline-block;padding:12px 20px;background:#25D366;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;">
+      WhatsApp Us
+    </a>
+  </div>
+`;
+
+const QUOTE_SIGNATURE_HTML = `
+  <table style="font-family:Arial,sans-serif;font-size:14px;color:#333;">
+    <tr>
+      <td style="padding-right:15px;">
+        <img src="https://landmacht.co.za/logo.png" alt="Landmacht Veiligheid" width="120" style="display:block;border:0;outline:none;text-decoration:none;" />
+      </td>
+      <td>
+        <strong style="color:#6FAF5E;font-size:18px;">Landmacht Team</strong><br/>
+        <span style="color:#6FAF5E;">Quotes Department</span><br/><br/>
+        <strong>P:</strong> +27 78 620 8404<br/>
+        <strong>E:</strong> <a href="mailto:info@landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">info@landmacht.co.za</a><br/>
+        <strong>W:</strong> <a href="https://www.landmacht.co.za" style="color:#6FAF5E;text-decoration:none;">www.landmacht.co.za</a>
+      </td>
+    </tr>
+  </table>
+`;
+
 function escapeHtml(value: string) {
   return value
     .replaceAll('&', '&amp;')
@@ -159,6 +185,49 @@ export async function POST(request: Request) {
           },
           { status: 500 }
         );
+      }
+
+      const quoteAutoReplyHtml = `
+        <div style="font-family:Arial,sans-serif;background-color:#f5f5f4;padding:24px;color:#18181b;">
+          <table style="max-width:640px;width:100%;margin:0 auto;background-color:#ffffff;border:1px solid #e4e4e7;border-radius:16px;">
+            <tr>
+              <td style="padding:24px 28px;background-color:#18181b;color:#fafafa;">
+                <p style="margin:0;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;opacity:0.8;">Landmacht Veiligheid</p>
+                <h1 style="margin:10px 0 0;font-size:24px;line-height:1.3;">Quote Request Received</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px;">
+                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3f3f46;">Hello ${safeBody.name},</p>
+                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3f3f46;">
+                  Thank you for contacting Landmacht Veiligheid. We have received your quote request successfully.
+                </p>
+                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#3f3f46;">
+                  Our team will review your requirements and reply shortly with the next steps.
+                </p>
+                ${WHATSAPP_BUTTON_HTML}
+                ${QUOTE_SIGNATURE_HTML}
+              </td>
+            </tr>
+          </table>
+        </div>
+      `;
+
+      try {
+        const autoReplyResponse = await resend.emails.send({
+          from: 'Landmacht Veiligheid <quotes@landmacht.co.za>',
+          to: [body.email?.trim() || ''],
+          subject: 'Quote Request Received | Landmacht Veiligheid',
+          html: quoteAutoReplyHtml
+        });
+
+        console.log('Quote auto-reply send response:', autoReplyResponse);
+
+        if (autoReplyResponse.error || !autoReplyResponse.data?.id) {
+          console.error('Quote auto-reply send failed:', autoReplyResponse.error ?? autoReplyResponse);
+        }
+      } catch (error) {
+        console.error('Quote auto-reply send threw an error:', error);
       }
     } catch (error) {
       console.error('Resend email send threw an error:', error);

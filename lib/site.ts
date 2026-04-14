@@ -12,11 +12,11 @@
 export const siteConfig = {
   name: 'Landmacht Veiligheid',
   description:
-    'Landmacht Veiligheid provides disciplined private security services across Franschhoek, Paarl, and Wellington with operational oversight. Contact info@landmacht.co.za or +27 87 265 7594.',
-  phone: '+27 87 265 7594',
+    'Landmacht Veiligheid provides disciplined private security services across Franschhoek, Paarl, and Wellington with operational oversight. Contact info@landmacht.co.za or +27 78 620 8404.',
+  phone: '+27 78 620 8404',
   email: 'info@landmacht.co.za',
   whatsapp: '27786208404',
-  whatsappUrl: 'https://wa.me/27786208404?text=Hi%20Landmacht%20Veiligheid%2C%20I%20would%20like%20a%20security%20quotation.',
+  whatsappUrl: 'https://wa.me/27786208404?text=Hi%20Landmacht%20Veiligheid%2C%20I%20would%20like%20assistance.',
   areas: ['Franschhoek', 'Paarl', 'Wellington'],
   logo: '/images/landmacht-logo.png'
 };

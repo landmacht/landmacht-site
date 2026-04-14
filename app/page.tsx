@@ -14,7 +14,7 @@ import { homeFaq, services, siteConfig } from '@/lib/site';
 
 export const metadata = buildMetadata(
   'Landmacht Veiligheid | Private Security in Franschhoek, Paarl and Wellington',
-  'Landmacht Veiligheid provides disciplined private security services across Franschhoek, Paarl, and Wellington. Contact info@landmacht.co.za or +27 87 265 7594.'
+  'Landmacht Veiligheid provides disciplined private security services across Franschhoek, Paarl, and Wellington. Contact info@landmacht.co.za or +27 78 620 8404.'
 );
 
 const strengths = [

@@ -6,7 +6,7 @@ import { siteConfig } from '@/lib/site';
 
 export const metadata = buildMetadata(
   'Get My Quote or Contact Landmacht',
-  'Contact Landmacht Veiligheid in Franschhoek, Paarl, and Wellington. Reach us at info@landmacht.co.za or +27 87 265 7594 for disciplined private security services.'
+  'Contact Landmacht Veiligheid in Franschhoek, Paarl, and Wellington. Reach us at info@landmacht.co.za or +27 78 620 8404 for disciplined private security services.'
 );
 
 export default function ContactPage() {

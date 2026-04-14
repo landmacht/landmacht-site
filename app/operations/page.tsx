@@ -42,7 +42,7 @@ export default function OperationsPage() {
       <Hero
         title="Operational Security With Clear Control"
         subtitle="Our operating model is built on discipline, oversight, and reliable reporting across every shift."
-        primaryCta={{ label: 'Request a Quote', href: '/contact#quote-form' }}
+        primaryCta={{ label: 'Get My Quote', href: '/contact#quote-form' }}
       />
 
       <section className="section-shell py-10">

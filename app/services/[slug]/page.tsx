@@ -76,7 +76,9 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           <h2 className="section-title">What We Do</h2>
           <ul className="mt-5 space-y-3 text-zinc-300">
             {service.whatWeDo.map((item) => (
-              <li key={item}>• {item}</li>
+              <li key={item} className="leading-6">
+                • {item}
+              </li>
             ))}
           </ul>
         </div>
@@ -99,7 +101,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             <p className="mt-2 text-sm text-zinc-300">Tell us your area, service type, and guards needed to receive a detailed quote.</p>
           </div>
           <Link href="#quote-form" className="btn-primary w-full md:w-auto">
-            Request a Quote
+            Get My Quote
           </Link>
         </div>
       </section>

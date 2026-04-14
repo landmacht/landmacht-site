@@ -92,7 +92,7 @@ export default function AreasPage() {
                 </div>
 
                 <Link href="/contact#quote-form" className="btn-primary mt-6">
-                  Request a quote in {entry.area}
+                  Get My Quote
                 </Link>
               </div>
             </div>

@@ -33,9 +33,24 @@ const strengths = [
 ];
 
 const steps = [
-  { title: 'Assess', text: 'Site walk-through, risk priorities, and deployment planning.' },
-  { title: 'Deploy', text: 'Structured staffing, post orders, and shift control.' },
-  { title: 'Report & Improve', text: 'Incident logs, supervisor feedback, and routine refinement.' }
+  { title: 'Tell Us What You Need', text: 'Share your area, site type, and guard requirements using the quote form or WhatsApp.' },
+  { title: 'We Review Your Needs', text: 'We assess your operational risks, staffing needs, and the right service fit for the site.' },
+  { title: 'Receive Your Quote Fast', text: 'You get a tailored quote quickly, with practical next steps for deployment and follow-up.' }
+];
+
+const servicePositioning = [
+  {
+    title: 'Estates',
+    text: 'Gate control, visible presence, and reporting discipline tailored to residential estates and managed communities.'
+  },
+  {
+    title: 'Farms',
+    text: 'Perimeter awareness, access-point control, and structured rural patrol routines for agricultural properties.'
+  },
+  {
+    title: 'Events',
+    text: 'Guest screening, controlled movement, and escalation support for private functions and business events.'
+  }
 ];
 
 export default function HomePage() {
@@ -43,10 +58,21 @@ export default function HomePage() {
     <>
       <Hero
         title="Disciplined Security. Visible Deterrence. Reliable Control."
-        subtitle="Professional guarding and operational oversight for estates, farms, and businesses across Franschhoek, Paarl, and Wellington."
-        primaryCta={{ label: 'Request a Quote', href: '#quote-form' }}
-        secondaryCta={{ label: 'Book a Security Assessment', href: '/security-assessment' }}
+        subtitle="Professional guarding and operational oversight for estates, farms, and businesses across Franschhoek, Paarl, Wellington, and surrounding Western Cape coverage."
+        primaryCta={{ label: 'Get My Quote', href: '#quote-form' }}
+        secondaryCta={{ label: 'WhatsApp Now', href: siteConfig.whatsappUrl }}
       >
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="rounded-2xl border border-zinc-700/80 bg-black/20 px-4 py-4 text-sm text-zinc-200">
+            Areas served: {siteConfig.areas.join(', ')} and wider Western Cape coverage on request.
+          </div>
+          <div className="rounded-2xl border border-zinc-700/80 bg-black/20 px-4 py-4 text-sm text-zinc-200">
+            Pricing starts from R19,500 per officer / month excl. VAT.
+          </div>
+          <div className="rounded-2xl border border-zinc-700/80 bg-black/20 px-4 py-4 text-sm text-zinc-200 sm:col-span-2 xl:col-span-1">
+            Fast quoting for estates, farms, events, and commercial sites.
+          </div>
+        </div>
         <div className="mt-10 overflow-hidden rounded-3xl border border-zinc-700/80">
           <SafeImage
             src={resolveImagePath('/images/hero-estate-gate.jpg')}
@@ -76,31 +102,11 @@ export default function HomePage() {
       <div className="section-shell"><div className="section-divider" /></div>
       <ServiceGrid />
 
-      <section className="section-shell py-10">
-        <div className="card-shell">
-          <h2 className="font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">Explore Services by Area</h2>
-          <p className="mt-3 text-sm text-zinc-300">
-            If you are comparing options for Franschhoek estates, Paarl commercial sites, or Wellington farms, use these direct links to navigate quickly.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Link href="/areas" className="btn-secondary">
-              Areas Coverage
-            </Link>
-            {services.map((service) => (
-              <Link key={service.slug} href={`/services/${service.slug}`} className="btn-secondary">
-                {service.title}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="section-shell"><div className="section-divider" /></div>
       <PackageCards />
       <div className="section-shell"><div className="section-divider" /></div>
 
       <section className="section-shell py-16">
-        <h2 className="section-title">How We Deploy</h2>
+        <h2 className="section-title">How It Works</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {steps.map((step, index) => (
             <div key={step.title} className="card-shell">
@@ -113,15 +119,40 @@ export default function HomePage() {
       </section>
 
       <div className="section-shell"><div className="section-divider" /></div>
+      <section className="section-shell py-16">
+        <h2 className="section-title">Security Positioned for Your Site</h2>
+        <p className="mt-4 max-w-3xl text-sm text-zinc-300">
+          We structure quotes around the environments we most often protect, so your proposal reflects real deployment requirements rather than a generic package.
+        </p>
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {servicePositioning.map((item) => (
+            <article key={item.title} className="card-shell">
+              <h3 className="font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">{item.title}</h3>
+              <p className="mt-3 text-sm text-zinc-300">{item.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <div className="section-shell"><div className="section-divider" /></div>
       <DeploymentExamples />
 
       <section className="section-shell py-12">
         <div className="card-shell">
           <h2 className="font-heading text-4xl font-semibold uppercase tracking-[0.03em] text-zinc-100">Areas We Serve</h2>
-          <p className="mt-3 text-zinc-300">{siteConfig.areas.join(', ')}</p>
-          <Link href="/areas" className="btn-secondary mt-5">
-            View Coverage Details
-          </Link>
+          <p className="mt-3 text-zinc-300">
+            {siteConfig.areas.join(', ')}. Use the quick links below to explore coverage and jump straight into the services most often requested across these areas.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href="/areas" className="btn-secondary">
+              View Coverage Details
+            </Link>
+            {services.map((service) => (
+              <Link key={service.slug} href={`/services/${service.slug}`} className="btn-secondary">
+                {service.title}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -131,19 +162,16 @@ export default function HomePage() {
 
       <section className="section-shell pb-14">
         <div className="card-shell">
-          <h2 className="font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">Contact Landmacht Veiligheid</h2>
+          <h2 className="font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">Ready to Get Your Quote?</h2>
           <p className="mt-3 text-sm text-zinc-300">
-            Phone: {siteConfig.phone} • Email: {siteConfig.email} • Areas served: {siteConfig.areas.join(', ')}
+            Request pricing for your site now, or reach out on WhatsApp if you want to speak to us straight away about estates, farms, or event coverage.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link href="tel:+27872657594" className="btn-secondary">
-              Call Now
-            </Link>
-            <Link href={`mailto:${siteConfig.email}`} className="btn-secondary">
-              Email Us
-            </Link>
             <Link href="#quote-form" className="btn-primary">
-              Request a Quote
+              Get My Quote
+            </Link>
+            <Link href={siteConfig.whatsappUrl} className="btn-secondary">
+              WhatsApp Now
             </Link>
           </div>
         </div>

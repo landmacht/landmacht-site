@@ -35,7 +35,7 @@ export default function ServicesPage() {
       <Hero
         title="Security Services Built for Operational Control"
         subtitle="Disciplined deployments for estates, farms, commercial sites and event environments across Franschhoek, Paarl and Wellington."
-        primaryCta={{ label: 'Request a Quote', href: '#quote-form' }}
+        primaryCta={{ label: 'Get My Quote', href: '#quote-form' }}
         secondaryCta={{ label: 'Book Security Assessment', href: '/security-assessment' }}
       />
       <ServiceGrid />

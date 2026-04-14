@@ -1,11 +1,17 @@
 ﻿'use client';
 
 import { FormEvent, useMemo, useState } from 'react';
+import Link from 'next/link';
+
+import { siteConfig } from '@/lib/site';
 
 type QuoteFormProps = {
   title?: string;
   embedded?: boolean;
   formId?: string;
+  description?: string;
+  urgencyText?: string;
+  submitLabel?: string;
 };
 
 type FormState = {
@@ -43,7 +49,14 @@ const initialState: FormState = {
 const areaOptions = ['Franschhoek', 'Paarl', 'Wellington', 'Other'];
 const guardOptions = ['1', '2', '3', '4+'];
 
-export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, formId = 'quote-form' }: QuoteFormProps) {
+export function QuoteForm({
+  title = 'Get a Quote in 24 Hours',
+  embedded = true,
+  formId = 'quote-form',
+  description = 'Tell us your area, service needs, and guard requirements for a tailored quote across Franschhoek, Paarl, Wellington, and surrounding Western Cape coverage.',
+  urgencyText = 'We typically respond within a few hours.',
+  submitLabel = 'Get My Quote'
+}: QuoteFormProps) {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
@@ -130,13 +143,23 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
   const formBody = (
     <div className="card-shell">
       {title ? <h2 className="section-title">{title}</h2> : null}
+      <p className="mt-3 max-w-3xl text-sm text-zinc-300">{description}</p>
       <p className="mt-3 text-sm text-zinc-200">
         From R19,500 per officer / month (excl. VAT). VAT charged at the prevailing rate.
       </p>
+      <p className="mt-2 text-sm font-medium text-tactical-oliveLight">{urgencyText}</p>
 
       {submitState === 'success' ? (
         <div className="mt-4 rounded-xl border border-emerald-700/60 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-300">
           Thank you. Your request has been submitted successfully. Our team will respond within 24 hours.
+          <p className="mt-3 text-sm text-emerald-200">
+            Need a faster response? Message us on WhatsApp and we will assist you directly.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            <Link href={siteConfig.whatsappUrl} className="btn-secondary">
+              WhatsApp Now
+            </Link>
+          </div>
         </div>
       ) : null}
 
@@ -260,7 +283,7 @@ export function QuoteForm({ title = 'Get a Quote in 24 Hours', embedded = true, 
           disabled={!canSubmit || submitState === 'submitting'}
           type="submit"
         >
-          {submitState === 'submitting' ? 'Submitting...' : 'Submit Quote Request'}
+          {submitState === 'submitting' ? 'Submitting...' : submitLabel}
         </button>
       </form>
     </div>

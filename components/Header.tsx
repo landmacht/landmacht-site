@@ -78,7 +78,7 @@ export function Header() {
 
         <div className="hidden lg:block">
           <Link href="/contact#quote-form" className="btn-primary">
-            Request a Quote
+            Get My Quote
           </Link>
         </div>
 
@@ -134,7 +134,7 @@ export function Header() {
               ))}
             </ul>
             <Link href="/contact#quote-form" onClick={closeMenus} className="btn-primary mt-4 w-full">
-              Request a Quote
+              Get My Quote
             </Link>
           </nav>
         </div>

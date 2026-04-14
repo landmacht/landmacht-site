@@ -21,7 +21,7 @@ export const siteConfig = {
   logo: '/images/landmacht-logo.png'
 };
 
-export const trustItems = ['PSIRA-ready', '24/7 options', 'Management oversight', 'Incident reporting'];
+export const trustItems = ['PSIRA Registered', 'Estate Specialists', 'Trained Guards', 'Western Cape coverage'];
 
 export const packageCards = [
   {
@@ -37,7 +37,8 @@ export const packageCards = [
   {
     name: 'Package C',
     officers: '3 officers',
-    price: 'From R58,500 / month excl. VAT'
+    price: 'From R57,000 / month excl. VAT',
+    note: 'Save R1,500 with multi-officer deployment'
   }
 ];
 
@@ -185,7 +186,7 @@ export const services: ServiceItem[] = [
     title: 'Event Security',
     summary: 'Structured crowd movement and access-point security for private and corporate events.',
     image: '/images/service-events.jpg',
-    outcomes: ['Controlled guest entry', 'Calmer crowd flow', 'Faster incident escalation'],
+    outcomes: ['Controlled guest entry', 'Calmer crowd flow', 'Immediate on-site response to incidents'],
     whatWeDo: [
       'Entry-point staffing and guest verification',
       'Perimeter and venue observation during live events',

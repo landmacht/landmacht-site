@@ -26,9 +26,11 @@ export function ServiceGrid() {
             <div className="p-6">
               <h3 className="font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">{service.title}</h3>
               <p className="mt-3 text-sm text-zinc-300">{service.summary}</p>
-              <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+              <ul className="mt-4 space-y-3 text-sm text-zinc-300">
                 {service.outcomes.slice(0, 3).map((outcome) => (
-                  <li key={outcome}>• {outcome}</li>
+                  <li key={outcome} className="leading-6">
+                    • {outcome}
+                  </li>
                 ))}
               </ul>
               <Link href={`/services/${service.slug}`} className="link-accent mt-6 inline-flex">

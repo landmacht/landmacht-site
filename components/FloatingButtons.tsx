@@ -14,7 +14,7 @@ export function FloatingButtons() {
         WhatsApp
       </Link>
       <Link href="#quote-form" className="btn-primary hidden rounded-full px-4 py-3 text-xs uppercase tracking-wide md:inline-flex">
-        Request Quote
+        Get My Quote
       </Link>
     </div>
   );

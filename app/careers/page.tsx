@@ -1,4 +1,5 @@
-﻿import { buildMetadata } from '@/lib/metadata';
+import { CareersForm } from '@/components/CareersForm';
+import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata(
   'Security Careers in Franschhoek, Paarl and Wellington',
@@ -16,22 +17,9 @@ export default function CareersPage() {
       <div className="card-shell mt-8">
         <h2 className="font-heading text-3xl font-semibold uppercase tracking-[0.03em] text-zinc-100">Apply to Join the Team</h2>
         <p className="mt-3 text-sm text-zinc-300">
-          Submit your details by email. Include your location, availability, and relevant guarding experience.
+          Submit your details below. Include your current location and relevant guarding experience so our recruitment team can review your application properly.
         </p>
-        <form className="mt-6 grid gap-4 md:grid-cols-2">
-          <input className="input-shell" placeholder="Full name" />
-          <input className="input-shell" placeholder="Phone" />
-          <input className="input-shell" placeholder="Email" />
-          <input className="input-shell" placeholder="Area" />
-          <textarea className="input-shell min-h-32 md:col-span-2" placeholder="Experience and availability" />
-          <a
-            href="mailto:careers@landmachtveiligheid.co.za?subject=Landmacht%20Careers%20Application"
-            className="btn-primary w-fit"
-          >
-            Submit via Email
-          </a>
-        </form>
-        <p className="mt-4 text-xs text-zinc-500">TODO: Replace mailto workflow with integrated careers submission endpoint.</p>
+        <CareersForm />
       </div>
     </section>
   );

@@ -12,7 +12,7 @@ export default function AboutPage() {
       <Hero
         title="Disciplined Service Backed by Operational Standards"
         subtitle="Landmacht Veiligheid is positioned as a professional private security partner focused on consistency, visibility, and accountable reporting."
-        primaryCta={{ label: 'Request a Quote', href: '/contact#quote-form' }}
+        primaryCta={{ label: 'Get My Quote', href: '/contact#quote-form' }}
       />
       <section className="section-shell pb-14">
         <div className="grid gap-6 lg:grid-cols-3">

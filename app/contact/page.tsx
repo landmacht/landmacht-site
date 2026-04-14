@@ -5,7 +5,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { siteConfig } from '@/lib/site';
 
 export const metadata = buildMetadata(
-  'Request a Quote or Contact Landmacht',
+  'Get My Quote or Contact Landmacht',
   'Contact Landmacht Veiligheid in Franschhoek, Paarl, and Wellington. Reach us at info@landmacht.co.za or +27 87 265 7594 for disciplined private security services.'
 );
 
@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <>
       <section className="section-shell py-16">
-        <h1 className="section-title">Request a Quote or Contact Landmacht</h1>
+        <h1 className="section-title">Get My Quote or Contact Landmacht</h1>
         <p className="mt-4 max-w-3xl text-zinc-300">
           Tell us about your site and security needs. Our operations team will respond with a practical deployment recommendation.
         </p>
@@ -43,7 +43,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-      <QuoteForm title="Request a Quote" />
+      <QuoteForm title="Get My Quote" />
     </>
   );
 }

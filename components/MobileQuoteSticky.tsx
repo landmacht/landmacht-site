@@ -14,7 +14,7 @@ export function MobileQuoteSticky() {
         onClick={() => setOpen(true)}
         className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-xl bg-tactical-olive px-5 py-3 text-sm font-semibold text-zinc-900 shadow-[0_10px_24px_rgba(111,124,77,0.35)] md:hidden"
       >
-        Request a Quote
+        Get My Quote
       </button>
 
       {open ? (

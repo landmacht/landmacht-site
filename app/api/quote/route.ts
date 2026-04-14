@@ -26,7 +26,7 @@ const QUOTE_SIGNATURE_HTML = `
   <table style="font-family:Arial,sans-serif;font-size:14px;color:#333;">
     <tr>
       <td style="padding-right:15px;">
-        <img src="https://landmacht.co.za/logo.png" alt="Landmacht Veiligheid" width="120" style="display:block;border:0;outline:none;text-decoration:none;" />
+        <img src="https://landmacht.co.za/images/landmacht-logo.png" alt="Landmacht Veiligheid" width="120" style="display:block;border:0;outline:none;text-decoration:none;" />
       </td>
       <td>
         <strong style="color:#6FAF5E;font-size:18px;">Landmacht Team</strong><br/>

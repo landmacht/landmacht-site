@@ -39,7 +39,6 @@ export default async function InsightDetailPage({ params }: InsightPageProps) {
   return (
     <article className="section-shell py-16">
       <div className="mx-auto max-w-3xl">
-        <p className="text-xs uppercase tracking-[0.2em] text-tactical-oliveLight">{post.frontmatter.date}</p>
         <h1 className="mt-3 font-heading text-4xl uppercase tracking-wide text-zinc-100 sm:text-5xl">
           {post.frontmatter.title}
         </h1>

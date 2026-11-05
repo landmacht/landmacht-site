@@ -2,8 +2,11 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
 import { CONTACT, WHATSAPP_LINK } from '@/src/lib/contact';
+import { receiveQuote, deliverQuoteEmail } from '@/src/lib/crm-intake';
 
 type QuotePayload = {
+  submissionId?: string;
+  sourcePage?: string;
   name?: string;
   phone?: string;
   email?: string;
@@ -34,7 +37,7 @@ const QUOTE_SIGNATURE_HTML = `
         <strong style="color:#6FAF5E;font-size:18px;">Landmacht Team</strong><br/>
         <span style="color:#6FAF5E;">Quotes Department</span><br/><br/>
         <strong>P:</strong> ${CONTACT.PHONE_DISPLAY}<br/>
-        <strong>E:</strong> <a href="mailto:${CONTACT.EMAIL}" style="color:#6FAF5E;text-decoration:none;">${CONTACT.EMAIL}</a><br/>
+        <strong>E:</strong> <a href="mailto:${CONTACT.QUOTES_EMAIL}" style="color:#6FAF5E;text-decoration:none;">${CONTACT.QUOTES_EMAIL}</a><br/>
         <strong>W:</strong> <a href="${WHATSAPP_LINK}" style="color:#6FAF5E;text-decoration:none;">WhatsApp Chat</a><br/>
         <strong>Web:</strong> <a href="${CONTACT.WEBSITE}" style="color:#6FAF5E;text-decoration:none;">${CONTACT.WEBSITE.replace('https://', 'www.')}</a>
       </td>
@@ -58,7 +61,7 @@ function validatePayload(payload: QuotePayload): FieldErrors {
   if (!payload.phone?.trim()) errors.phone = 'Phone is required.';
   if (!payload.email?.trim()) {
     errors.email = 'Email is required.';
-  } else if (!payload.email.includes('@')) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email.trim())) {
     errors.email = 'A valid email is required.';
   }
   if (!payload.area?.trim()) errors.area = 'Area is required.';
@@ -70,7 +73,11 @@ function validatePayload(payload: QuotePayload): FieldErrors {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as QuotePayload;
+    const raw = await request.text();
+    if (Buffer.byteLength(raw) > 16000) return NextResponse.json({ success:false, message:'Enquiry is too long.' },{status:413});
+    let body: QuotePayload;
+    try { body=JSON.parse(raw); } catch { return NextResponse.json({success:false,message:'Invalid enquiry.'},{status:400}); }
+    if (!body || Array.isArray(body) || Object.values(body).some(v=>typeof v!=='string') || Object.entries(body).some(([k,v])=>String(v).length>(k==='notes'?8000:k==='phone'?40:k==='guardsNeeded'?20:255))) return NextResponse.json({success:false,message:'Check enquiry fields and length.'},{status:400});
     const errors = validatePayload(body);
 
     if (Object.keys(errors).length > 0) {
@@ -85,19 +92,21 @@ export async function POST(request: Request) {
     }
 
     const apiKey = process.env.RESEND_API_KEY;
-    console.log('RESEND_API_KEY exists:', Boolean(apiKey));
 
     if (!apiKey) {
       return NextResponse.json(
         {
           success: false,
-          message: 'Missing RESEND_API_KEY'
+          message: 'Enquiries are temporarily unavailable. Please contact us directly.'
         },
         { status: 500 }
       );
     }
 
     const resend = new Resend(apiKey);
+    let receipt;
+    try { receipt=await receiveQuote(body); }
+    catch { return NextResponse.json({success:false,message:'Your enquiry could not be saved. Please retry or contact us directly.'},{status:503}); }
     const safeBody = {
       name: escapeHtml(body.name?.trim() || ''),
       phone: escapeHtml(body.phone?.trim() || ''),
@@ -167,18 +176,16 @@ export async function POST(request: Request) {
     `;
 
     try {
-      const resendResponse = await resend.emails.send({
+      const resendResponse = await deliverQuoteEmail(receipt,'primary', key=>resend.emails.send({
         from: `Landmacht Quotes <${CONTACT.QUOTES_EMAIL}>`,
         to: [CONTACT.QUOTES_EMAIL],
         subject: 'New Quote Request - Landmacht Website',
         text: textBody,
         html: htmlBody,
         replyTo: body.email?.trim()
-      });
+      },key?{idempotencyKey:key}:undefined));
 
-      console.log('Resend email send response:', resendResponse);
-
-      if (resendResponse.error || !resendResponse.data?.id) {
+      if (!receipt && (resendResponse.error || !resendResponse.data?.id)) {
         const sendError = resendResponse.error ?? new Error('Email failed to send.');
         console.error('Resend email send failed:', sendError);
         return NextResponse.json(
@@ -217,14 +224,12 @@ export async function POST(request: Request) {
       `;
 
       try {
-        const autoReplyResponse = await resend.emails.send({
+        const autoReplyResponse = await deliverQuoteEmail(receipt,'acknowledgement',key=>resend.emails.send({
           from: `Landmacht Veiligheid <${CONTACT.QUOTES_EMAIL}>`,
           to: [body.email?.trim() || ''],
           subject: 'Quote Request Received | Landmacht Veiligheid',
           html: quoteAutoReplyHtml
-        });
-
-        console.log('Quote auto-reply send response:', autoReplyResponse);
+        },key?{idempotencyKey:key}:undefined));
 
         if (autoReplyResponse.error || !autoReplyResponse.data?.id) {
           console.error('Quote auto-reply send failed:', autoReplyResponse.error ?? autoReplyResponse);

@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 
 import { WHATSAPP_LINK } from '@/src/lib/contact';
@@ -61,6 +61,7 @@ export function QuoteForm({
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [serverMessage, setServerMessage] = useState('');
+  const submission = useRef<{ id: string; fingerprint: string } | null>(null);
 
   const canSubmit = useMemo(
     () =>
@@ -103,6 +104,8 @@ export function QuoteForm({
     setSubmitState('submitting');
 
     try {
+      const fingerprint = JSON.stringify(form);
+      if (submission.current?.fingerprint !== fingerprint) submission.current = { id: crypto.randomUUID(), fingerprint };
       const response = await fetch(QUOTE_API_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -110,6 +113,8 @@ export function QuoteForm({
           Accept: 'application/json'
         },
         body: JSON.stringify({
+          submissionId: submission.current!.id,
+          sourcePage: window.location.pathname,
           name: form.name,
           phone: form.phone,
           email: form.email,
@@ -134,6 +139,7 @@ export function QuoteForm({
       setSubmitState('success');
       setServerMessage('');
       setForm(initialState);
+      submission.current = null;
     } catch {
       setSubmitState('error');
       setServerMessage('Submission failed. Please try again in a moment.');
